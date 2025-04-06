@@ -5,7 +5,7 @@ const textInput = document.getElementById('textInput');
 const readButton = document.getElementById('readButton');
 const playButton = document.getElementById('playButton');
 const pauseButton = document.getElementById('pauseButton');
-const restartButton = document.getElementById('restartButton');
+const refreshButton = document.getElementById('refreshButton');
 
 let utterance;
 let isPaused = false;
@@ -35,9 +35,8 @@ pauseButton.addEventListener('click', () => {
   }
 });
 
-// Restart the speech from the beginning
-restartButton.addEventListener('click', () => {
+// Refresh button: clear the text area and cancel any current speech
+refreshButton.addEventListener('click', () => {
   speechSynthesis.cancel();
-  utterance = new SpeechSynthesisUtterance(textInput.value);
-  speechSynthesis.speak(utterance);
+  textInput.value = '';
 });
