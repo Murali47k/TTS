@@ -1,6 +1,3 @@
-// This code runs in the BrowserWindow context, so `document` is available.
-
-// Get DOM elements
 const textInput = document.getElementById('textInput');
 const readButton = document.getElementById('readButton');
 const playButton = document.getElementById('playButton');
@@ -10,33 +7,58 @@ const refreshButton = document.getElementById('refreshButton');
 let utterance;
 let isPaused = false;
 
-// When "Read" is clicked, cancel any current speech and start new speech
+function highlightWord(start, end) {
+  textInput.focus();
+  textInput.setSelectionRange(start, end);
+  const textBefore = textInput.value.substring(0, start);
+  const lines = textBefore.split("\n");
+  textInput.scrollTop = lines.length * 20;
+}
+
+function clearActiveStates() {
+  playButton.classList.remove('is-active');
+  pauseButton.classList.remove('is-active');
+}
+
 readButton.addEventListener('click', () => {
   if (speechSynthesis.speaking) {
     speechSynthesis.cancel();
   }
+
+  clearActiveStates();
   utterance = new SpeechSynthesisUtterance(textInput.value);
+  isPaused = false;
+
+  utterance.onboundary = function (event) {
+    if (event.name === 'word') {
+      highlightWord(event.charIndex, event.charIndex + event.charLength);
+    }
+  };
+
   speechSynthesis.speak(utterance);
 });
 
-// Resume speech if paused
 playButton.addEventListener('click', () => {
   if (isPaused) {
     speechSynthesis.resume();
     isPaused = false;
+    clearActiveStates();
+    playButton.classList.add('is-active');
   }
 });
 
-// Pause the speech
 pauseButton.addEventListener('click', () => {
   if (speechSynthesis.speaking) {
     speechSynthesis.pause();
     isPaused = true;
+    clearActiveStates();
+    pauseButton.classList.add('is-active');
   }
 });
 
-// Refresh button: clear the text area and cancel any current speech
 refreshButton.addEventListener('click', () => {
   speechSynthesis.cancel();
   textInput.value = '';
+  textInput.setSelectionRange(0, 0);
+  clearActiveStates();
 });
