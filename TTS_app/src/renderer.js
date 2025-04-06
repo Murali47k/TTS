@@ -12,7 +12,8 @@ function highlightWord(start, end) {
   textInput.setSelectionRange(start, end);
   const textBefore = textInput.value.substring(0, start);
   const lines = textBefore.split("\n");
-  textInput.scrollTop = lines.length * 20;
+  const scrollPosition = lineHeight * 10;
+  textInput.scrollTop = scrollPosition;
 }
 
 function clearActiveStates() {
