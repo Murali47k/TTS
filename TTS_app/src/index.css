@@ -39,14 +39,22 @@ body {
 .buttons-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   flex-wrap: wrap;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .button-group {
   display: flex;
-  gap: 5px;
+  gap: 0.5rem;
+}
+
+#voiceSelect {
+  width: 150px;
+  border-radius: 5px;
+  padding: 0.5em;
+  font-size: 1em;
+  left:0%;
 }
 
 /* Style the textarea to be more prominent */
